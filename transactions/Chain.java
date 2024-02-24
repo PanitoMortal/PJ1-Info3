@@ -44,12 +44,25 @@ public class Chain {
         // TODO: Implement this function. Return the balance
         //prueba
         // of the chain only if it is valid. If it is invalid, return 0.0
+        if(!isValid()){
         return 0.0;
     }
-
+    return transactions.stream().mapToDouble(Node::getAmount).sum();
+    }
+    
     public boolean isValid(){
         // TODO: Implement this function. Return true or false depending on
         // whether all nodes in the chain are valid or not. 
+        if(this.transactions.isEmpty()){
+            return true;
+        }
+        String expectedKey = this.chainKey;
+        for(Node node : this.transactions){
+            if(!node.isValid() || !node.getPreviousKey().equals(expectedKey)){
+                return false;
+            }
+            expectedKey = node.getKey();
+        }
         return true;
     }
 
@@ -57,6 +70,13 @@ public class Chain {
         //TODO: Imeplement this function. Navigate through all nodes in the 
         // chain, finding the first one that has an inconsistency, and return it.
         // If no node is found, return null
+         String expectedKey = this.chainKey;
+         for(Node node : this.transactions){
+             if(!node.isValid() || !node.getPreviousKey().equals(expectedKey)){
+                return node;
+            }
+            expectedKey = node.getKey();
+        }
         return null;
     }
 
