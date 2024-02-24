@@ -57,14 +57,14 @@ public class Chain {
 
     public boolean isValid(){
       Node previousNode = null;
-    for (Node node : this.transactions) {
-        if (previousNode != null && !node.getPreviousKey().equals(previousNode.getKey())) {
-            return false;
+        for (Node node : this.transactions) {
+            if ((previousNode != null && !node.getPreviousKey().equals(previousNode.getKey())) || !node.isValid(this.chainKey)) {
+                return false;
+            }
+            previousNode = node;
         }
-        previousNode = node;
+        return true;
     }
-    return true;
-}
 
     public Node firstInconsistency() {
       Node previousNode = null;
