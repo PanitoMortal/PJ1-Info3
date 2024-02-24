@@ -19,7 +19,8 @@ public class Node {
     private String date;
     private double amount;
     private String key;
-    private Node previousNode;
+    private String previousNodeKey;
+    private String transactionKey;
 
     public Node(String type, String date, double amount, Node previousNode) throws Exception{
         this.type = type;
