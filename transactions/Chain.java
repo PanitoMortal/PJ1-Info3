@@ -8,7 +8,7 @@ import java.util.LinkedList;
 */
 
 public class Chain {
-    LinkedList<Node> transactions;
+    private LinkedList<Node> transactions;
     private String chainKey;
 
     public Chain(String chainKey){
