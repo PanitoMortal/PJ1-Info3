@@ -41,8 +41,12 @@ public class Node {
         this.link(key);
     }
 
-    public Node getPreviousNode(){
-        return this.previousNode;
+    public String getPreviousKey() {
+        if (this.previousNode != null) {
+            return this.previousNode.getKey();
+        } else {
+            return null;
+        }
     }
 
     public String getKey(){
@@ -186,4 +190,6 @@ private String generateNewKeyBasedOnField(String oldKey, String field) {
 
         return currentKeyIndex + 1;
     }
+}
+
 }
