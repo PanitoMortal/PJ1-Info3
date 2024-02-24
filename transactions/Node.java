@@ -97,11 +97,9 @@ public class Node {
     }
 
     public boolean isValid(String chainKey){
-      String regeneratedKey = generateNewKey(chainKey);
-      return this.key.equals(regeneratedKey);
-        return true;
-    }
-
+    String regeneratedKey = generateNewKey(chainKey);
+    return this.key.equals(regeneratedKey);
+}
     public String findInconsistency(String chainString){
       String regeneratedKey = generateNewKey(chainString);
   if (!this.key.equals(regeneratedKey)) {
@@ -143,7 +141,7 @@ public class Node {
       String encodedType = encodeString(this.type, oldKey);
       String encodedDate = encodeString(this.date, oldKey);
       String encodedAmount = encodeDouble(this.amount, oldKey);
-      return encodedType + encodedDate + encodedAmount;
+       return encodedType + encodedDate + encodedAmount;
 }
 
 private String generateNewKeyBasedOnField(String oldKey, String field) {
