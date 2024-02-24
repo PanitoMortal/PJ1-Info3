@@ -27,7 +27,8 @@ public class Node {
         this.date = date;
         this.amount = amount;
         this.previousNodeKey = previousKey;
-
+        this.previousNodeKey = previousNode != null ? previousNode.transactionKey : null;
+         this.transactionKey = generateTransactionKey();
         this.validateFields();
         this.link(previousNode.key);
     }
@@ -37,7 +38,7 @@ public class Node {
         this.date = date;
         this.amount = amount;
         this.previousNode = null;
-
+        this.transactionKey = generateTransactionKey();
         this.validateFields();
         this.link(key);
     }
