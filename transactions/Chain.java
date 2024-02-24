@@ -13,50 +13,59 @@ public class Chain {
 
     public Chain(String chainKey){
         this.chainKey = chainKey;
-        this.transactions = new LinkedList<Node>();
+        this.transactions = new LinkedList<>();
     }
 
     public Node findByIndex(int index){
-        if(index >= 0 && this.transactions.size() < index){
-            this.transactions.get(index);
+        // Corrección: Verificar correctamente el rango del índice
+        if(index >= 0 && index < this.transactions.size()){
+            return this.transactions.get(index);
         }
-
         return null;
     }
 
     public Node transactionAt(int index){
         return this.transactions.get(index);
     }
-    
-    public Node findByKey(String key){
-        for(int i = 0; i < this.transactions.size(); i++){
-            Node node = this.transactions.get(i);
 
+    public Node findByKey(String key){
+        for(Node node : this.transactions){
             if(node.getKey().equals(key)){
                 return node;
             }
         }
-
         return null;
     }
 
     public double getBalance(){
-        // TODO: Implement this function. Return the balance
-        //prueba
-        // of the chain only if it is valid. If it is invalid, return 0.0
-        return 0.0;
+        if(!isValid()){
+            return 0.0;
+        }
+        return transactions.stream().mapToDouble(Node::getAmount).sum();
     }
 
     public boolean isValid(){
-        // TODO: Implement this function. Return true or false depending on
-        // whether all nodes in the chain are valid or not. 
+        if(this.transactions.isEmpty()){
+            return true;
+        }
+        String expectedKey = this.chainKey;
+        for(Node node : this.transactions){
+            if(!node.isValid() || !node.getPreviousKey().equals(expectedKey)){
+                return false;
+            }
+            expectedKey = node.getKey();
+        }
         return true;
     }
 
     public Node firstInconsistency() {
-        //TODO: Imeplement this function. Navigate through all nodes in the 
-        // chain, finding the first one that has an inconsistency, and return it.
-        // If no node is found, return null
+        String expectedKey = this.chainKey;
+        for(Node node : this.transactions){
+            if(!node.isValid() || !node.getPreviousKey().equals(expectedKey)){
+                return node;
+            }
+            expectedKey = node.getKey();
+        }
         return null;
     }
 
@@ -65,11 +74,11 @@ public class Chain {
     }
 
     public void addTransaction(String type, String date, double amount) throws Exception{
-        if(this.transactions.size() == 0){
+        if(this.transactions.isEmpty()){
             this.transactions.add(new Node(type, date, amount, this.chainKey));
         }else{
             Node previousNode = this.transactions.getLast();
-            this.transactions.add(new Node(type, date, amount, previousNode));
+            this.transactions.add(new Node(type, date, amount, previousNode.getKey()));
         }
     }
 }
