@@ -16,12 +16,12 @@ public class Chain {
     }
 
     public Node findByIndex(int index){
-        if(index >= 0 && this.transactions.size() < index){
-            this.transactions.get(index);
-        }
-
-        return null;
+    if(index >= 0 && index < this.transactions.size()){
+        return this.transactions.get(index);
     }
+
+    return null;
+}
 
     public Node transactionAt(int index){
         return this.transactions.get(index);
