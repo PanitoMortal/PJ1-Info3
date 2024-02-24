@@ -45,26 +45,23 @@ public class Chain {
     }
 
     public boolean isValid(){
-        if(this.transactions.isEmpty()){
-            return true;
-        }
-        String expectedKey = this.chainKey;
-        for(Node node : this.transactions){
-            if(!node.isValid() || !node.getPreviousKey().equals(expectedKey)){
+        String currentKey = chainKey;
+        for (Node node : transactions) {
+            if (!node.isValid(currentKey)) {
                 return false;
             }
-            expectedKey = node.getKey();
+            currentKey = node.getTransactionKey();
         }
         return true;
     }
 
     public Node firstInconsistency() {
-        String expectedKey = this.chainKey;
-        for(Node node : this.transactions){
-            if(!node.isValid() || !node.getPreviousKey().equals(expectedKey)){
+        String currentKey = chainKey;
+        for (Node node : transactions) {
+            if (!node.isValid(currentKey)) {
                 return node;
             }
-            expectedKey = node.getKey();
+            currentKey = node.getTransactionKey();
         }
         return null;
     }
