@@ -42,6 +42,7 @@ public class Chain {
 
     public double getBalance(){
         // TODO: Implement this function. Return the balance
+        //prueba
         // of the chain only if it is valid. If it is invalid, return 0.0
         return 0.0;
     }
@@ -53,7 +54,7 @@ public class Chain {
     }
 
     public Node firstInconsistency() {
-        // TODO: Imeplement this function. Navigate through all nodes in the
+        //TODO: Imeplement this function. Navigate through all nodes in the 
         // chain, finding the first one that has an inconsistency, and return it.
         // If no node is found, return null
         return null;
