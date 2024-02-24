@@ -6,76 +6,82 @@ import java.util.LinkedList;
 * linked to the previous one in order to maintain consistency. Please modify
 * only the specified methods
 */
-
 public class Chain {
-    private LinkedList<Node> transactions;
+    LinkedList<Node> transactions;
     private String chainKey;
 
     public Chain(String chainKey){
         this.chainKey = chainKey;
-        this.transactions = new LinkedList<>();
+        this.transactions = new LinkedList<Node>();
     }
 
     public Node findByIndex(int index){
-        // Corrección: Verificar correctamente el rango del índice
-        if(index >= 0 && index < this.transactions.size()){
-            return this.transactions.get(index);
+        if(index >= 0 && this.transactions.size() < index){
+            this.transactions.get(index);
         }
+
         return null;
     }
 
     public Node transactionAt(int index){
         return this.transactions.get(index);
     }
-
+    
     public Node findByKey(String key){
-        for(Node node : this.transactions){
+        for(int i = 0; i < this.transactions.size(); i++){
+            Node node = this.transactions.get(i);
+
             if(node.getKey().equals(key)){
                 return node;
             }
         }
+
         return null;
     }
 
     public double getBalance(){
-        if(!isValid()){
-            return 0.0;
-        }
-        return transactions.stream().mapToDouble(Node::getAmount).sum();
-    }
+      if (!isValid()) {
+           return 0.0;
+       }
+   
+       double balance = 0.0;
+       for (Node node : this.transactions) {
+           balance += node.getAmount();
+       }
+       return balance;
 
     public boolean isValid(){
-        String currentKey = chainKey;
-        for (Node node : transactions) {
-            if (!node.isValid(currentKey)) {
-                return false;
-            }
-            currentKey = node.getTransactionKey();
+      Node previousNode = null;
+    for (Node node : this.transactions) {
+        if (previousNode != null && !node.getPreviousKey().equals(previousNode.getKey())) {
+            return false;
         }
-        return true;
+        previousNode = node;
     }
+    return true;
+}
 
     public Node firstInconsistency() {
-        String currentKey = chainKey;
-        for (Node node : transactions) {
-            if (!node.isValid(currentKey)) {
-                return node;
-            }
-            currentKey = node.getTransactionKey();
-        }
-        return null;
-    }
+      Node previousNode = null;
+ for (Node node : this.transactions) {
+     if (previousNode != null && !node.getPreviousKey().equals(previousNode.getKey())) {
+         return node;
+     }
+     previousNode = node;
+ }
+ return null;
+}
 
     public String findInconsistentField(Node node){
         return node.findInconsistency(this.chainKey);
     }
 
     public void addTransaction(String type, String date, double amount) throws Exception{
-        if(this.transactions.isEmpty()){
+        if(this.transactions.size() == 0){
             this.transactions.add(new Node(type, date, amount, this.chainKey));
         }else{
             Node previousNode = this.transactions.getLast();
-            this.transactions.add(new Node(type, date, amount, previousNode.getKey()));
+            this.transactions.add(new Node(type, date, amount, previousNode));
         }
     }
 }
