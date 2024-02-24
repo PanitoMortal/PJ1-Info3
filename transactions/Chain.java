@@ -41,14 +41,19 @@ public class Chain {
 
     public double getBalance(){
       if (!isValid()) {
-           return 0.0;
-       }
-   
-       double balance = 0.0;
-       for (Node node : this.transactions) {
-           balance += node.getAmount();
-       }
-       return balance;
+        return 0.0;
+    }
+
+    double balance = 0.0;
+    for (Node node : this.transactions) {
+        if(node.getType().equals("DE")){ // Assuming "DE" stands for deposit
+            balance += node.getAmount();
+        } else if(node.getType().equals("WH")){ // Assuming "WH" stands for withdrawal
+            balance -= node.getAmount();
+        }
+    }
+    return balance;
+}
 
     public boolean isValid(){
       Node previousNode = null;
