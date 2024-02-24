@@ -26,7 +26,7 @@ public class Node {
         this.type = type;
         this.date = date;
         this.amount = amount;
-        this.previousNode = previousNode;
+        this.previousNodeKey = previousKey;
 
         this.validateFields();
         this.link(previousNode.key);
@@ -46,8 +46,8 @@ public class Node {
         return this.previousNode;
     }
 
-    public String getKey(){
-        return this.key;
+   public String getTransactionKey() {
+        return transactionKey;
     }
 
     public String getType(){
